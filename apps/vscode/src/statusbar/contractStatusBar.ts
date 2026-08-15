@@ -5,8 +5,8 @@ export class ContractStatusBar {
   private item: vscode.StatusBarItem;
 
   constructor() {
-    // Position on Left Status Bar (priority 100) next to Git branch and diagnostics
-    this.item = vscode.window.createStatusBarItem('apisentry.statusBar', vscode.StatusBarAlignment.Left, 100);
+    // Position on Right Status Bar (priority 1000) near language and position details
+    this.item = vscode.window.createStatusBarItem('apisentry.statusBar', vscode.StatusBarAlignment.Right, 1000);
     this.item.command = 'apisentry.openContractExplorer';
     this.item.name = 'APISentry API Contract Guard';
     this.updateStatus(null);

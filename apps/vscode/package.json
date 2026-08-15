@@ -2,7 +2,7 @@
   "name": "apisentry-vscode",
   "displayName": "APISentry - API Contract Guard",
   "description": "Catch frontend ↔ backend API contract mismatches before runtime in VS Code, Cursor & Antigravity IDE.",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "publisher": "apisentry",
   "icon": "icon.png",
   "engines": {
@@ -14,7 +14,12 @@
     "Testing"
   ],
   "activationEvents": [
-    "*"
+    "onStartupFinished",
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescriptreact",
+    "workspaceContains:**/*.{js,ts,jsx,tsx}"
   ],
   "main": "./dist/extension.js",
   "contributes": {
