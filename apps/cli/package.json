@@ -7,16 +7,22 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc && mkdir -p dist/preview && cp src/preview/*.html dist/preview/",
+    "build": "tsc && esbuild src/preview/index.tsx --bundle --platform=browser --target=es2020 --outfile=dist/preview/bundle.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@apisentry/analyzer": "workspace:*",
     "@apisentry/shared": "workspace:*",
-    "@apisentry/types": "workspace:*"
+    "@apisentry/types": "workspace:*",
+    "@apisentry/ui": "workspace:*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "esbuild": "^0.21.5",
     "typescript": "^5.3.3"
   }
 }
