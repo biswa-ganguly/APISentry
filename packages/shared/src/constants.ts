@@ -15,5 +15,6 @@ export const DEFAULT_EXCLUDES = [
 ];
 
 export const DEFAULT_INCLUDES = [
-  '**/*.{js,jsx,ts,tsx}'
+  '**/*.{js,jsx,ts,tsx,py}'
 ];
+

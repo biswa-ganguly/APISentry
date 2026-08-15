@@ -1,6 +1,6 @@
 import { AnalysisResult, ApiConsumer, ApiProvider } from '@apisentry/types';
 import { loadConfig } from '@apisentry/config';
-import { AxiosAdapter, FetchAdapter, ExpressAdapter } from '@apisentry/adapters';
+import { AxiosAdapter, FetchAdapter, ExpressAdapter, PythonAdapter } from '@apisentry/adapters';
 import { ContractEngine } from '@apisentry/contract-engine';
 import { discoverFiles } from './fileDiscovery.js';
 import { createProject } from './projectLoader.js';
@@ -10,8 +10,10 @@ export async function scanWorkspace(projectRoot: string): Promise<AnalysisResult
   const config = loadConfig(projectRoot);
 
   const filePaths = await discoverFiles(projectRoot, config);
-  const project = createProject(filePaths);
+  const jsTsFiles = filePaths.filter(f => !f.endsWith('.py'));
+  const pythonFiles = filePaths.filter(f => f.endsWith('.py'));
 
+  const project = createProject(jsTsFiles);
   const sourceFiles = project.getSourceFiles();
 
   const consumers: ApiConsumer[] = [];
@@ -20,6 +22,7 @@ export async function scanWorkspace(projectRoot: string): Promise<AnalysisResult
   const axiosAdapter = new AxiosAdapter();
   const fetchAdapter = new FetchAdapter();
   const expressAdapter = new ExpressAdapter();
+  const pythonAdapter = new PythonAdapter();
 
   for (const sf of sourceFiles) {
     if (axiosAdapter.canHandleFile(sf.getFilePath())) {
@@ -32,8 +35,15 @@ export async function scanWorkspace(projectRoot: string): Promise<AnalysisResult
     }
   }
 
+  // Express JS/TS providers
   const expressProviders = await expressAdapter.findProviders(project, sourceFiles);
   providers.push(...expressProviders);
+
+  // Python backend providers (FastAPI, Flask, Django)
+  if (pythonFiles.length > 0) {
+    const pythonProviders = await pythonAdapter.findProviders(pythonFiles);
+    providers.push(...pythonProviders);
+  }
 
   const engine = new ContractEngine(config);
   const issues = engine.match(consumers, providers);
@@ -46,7 +56,7 @@ export async function scanWorkspace(projectRoot: string): Promise<AnalysisResult
     issues,
     metrics: {
       filesDiscovered: filePaths.length,
-      filesParsed: sourceFiles.length,
+      filesParsed: sourceFiles.length + pythonFiles.length,
       consumersDetected: consumers.length,
       providersDetected: providers.length,
       issuesGenerated: issues.length,
@@ -54,3 +64,4 @@ export async function scanWorkspace(projectRoot: string): Promise<AnalysisResult
     }
   };
 }
+

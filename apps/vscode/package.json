@@ -19,7 +19,8 @@
     "onLanguage:typescript",
     "onLanguage:javascriptreact",
     "onLanguage:typescriptreact",
-    "workspaceContains:**/*.{js,ts,jsx,tsx}"
+    "onLanguage:python",
+    "workspaceContains:**/*.{js,ts,jsx,tsx,py}"
   ],
   "main": "./dist/extension.js",
   "contributes": {
