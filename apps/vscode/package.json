@@ -1,0 +1,71 @@
+{
+  "name": "apisentry-vscode",
+  "displayName": "APISentry - API Contract Guard",
+  "description": "Catch frontend ↔ backend API contract mismatches before runtime in VS Code, Cursor & Antigravity IDE.",
+  "version": "1.0.0",
+  "publisher": "apisentry",
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Linters",
+    "Programming Languages",
+    "Testing"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "apisentry.scanWorkspace",
+        "title": "APISentry: Scan Workspace",
+        "category": "APISentry"
+      },
+      {
+        "command": "apisentry.refreshContracts",
+        "title": "APISentry: Refresh Contracts",
+        "category": "APISentry"
+      },
+      {
+        "command": "apisentry.openContractExplorer",
+        "title": "APISentry: Open Contract Explorer",
+        "category": "APISentry"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "apisentry-explorer",
+          "title": "API Contract Guard",
+          "icon": "$(shield)"
+        }
+      ]
+    },
+    "views": {
+      "apisentry-explorer": [
+        {
+          "id": "apisentry.contractTree",
+          "name": "API Contracts"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build": "esbuild src/extension.ts --bundle --platform=node --target=node18 --external:vscode --outfile=dist/extension.js",
+    "package": "vsce package --allow-missing-repository --no-dependencies",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@apisentry/analyzer": "workspace:*",
+    "@apisentry/config": "workspace:*",
+    "@apisentry/shared": "workspace:*",
+    "@apisentry/types": "workspace:*",
+    "@types/vscode": "^1.80.0",
+    "@vscode/vsce": "^2.22.0",
+    "esbuild": "^0.21.5",
+    "typescript": "^5.3.3"
+  }
+}

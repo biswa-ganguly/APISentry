@@ -1,0 +1,9 @@
+node_modules/
+dist/
+build/
+.next/
+out/
+*.vsix
+.DS_Store
+coverage/
+*.log

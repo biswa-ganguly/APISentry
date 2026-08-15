@@ -1,0 +1,17 @@
+{
+  "name": "@apisentry/shared",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@apisentry/types": "workspace:*",
+    "ts-morph": "^21.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
