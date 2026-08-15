@@ -1,6 +1,44 @@
 import React from 'react';
 import { ContractIssue } from '@apisentry/types';
 
+export const ISSUE_TYPE_STYLES: Record<string, { badge: string; border: string; label: string }> = {
+  ENDPOINT_NOT_FOUND: {
+    badge: 'bg-rose-500/20 text-rose-400 border-rose-500/40 hover:bg-rose-500/30',
+    border: 'border-l-rose-500',
+    label: 'ENDPOINT NOT FOUND'
+  },
+  METHOD_MISMATCH: {
+    badge: 'bg-amber-500/20 text-amber-400 border-amber-500/40 hover:bg-amber-500/30',
+    border: 'border-l-amber-500',
+    label: 'METHOD MISMATCH'
+  },
+  MISSING_REQUEST_FIELD: {
+    badge: 'bg-purple-500/20 text-purple-300 border-purple-500/40 hover:bg-purple-500/30',
+    border: 'border-l-purple-500',
+    label: 'MISSING REQUEST FIELD'
+  },
+  UNKNOWN_REQUEST_FIELD: {
+    badge: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 hover:bg-cyan-500/30',
+    border: 'border-l-cyan-500',
+    label: 'UNKNOWN REQUEST FIELD'
+  },
+  REQUEST_TYPE_MISMATCH: {
+    badge: 'bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-500/40 hover:bg-fuchsia-500/30',
+    border: 'border-l-fuchsia-500',
+    label: 'TYPE MISMATCH'
+  },
+  RESPONSE_FIELD_MISSING: {
+    badge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 hover:bg-emerald-500/30',
+    border: 'border-l-emerald-500',
+    label: 'RESPONSE FIELD MISSING'
+  },
+  DYNAMIC_ENDPOINT_UNRESOLVED: {
+    badge: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40 hover:bg-indigo-500/30',
+    border: 'border-l-indigo-500',
+    label: 'DYNAMIC UNRESOLVED'
+  }
+};
+
 export interface IssueCardProps {
   issue: ContractIssue;
   onOpenFile?: (filePath: string, line: number, column: number) => void;
@@ -82,10 +120,16 @@ export const IssueCard: React.FC<IssueCardProps> = ({ issue, onOpenFile }) => {
 
   const getFileName = (fullPath: string) => fullPath.split(/[\/\\]/).pop() || fullPath;
 
+  const styleInfo = ISSUE_TYPE_STYLES[issue.type] || {
+    badge: 'bg-gray-500/20 text-gray-300 border-gray-500/40',
+    border: 'border-l-cyan-500',
+    label: issue.type
+  };
+
   return (
-    <div className={`bg-gray-900/90 border border-white/10 rounded-xl p-5 flex flex-col gap-4 border-l-4 ${issue.severity === 'error' ? 'border-l-rose-500' : 'border-l-amber-500'}`}>
+    <div className={`bg-gray-900/90 border border-white/10 rounded-xl p-5 flex flex-col gap-4 border-l-4 ${styleInfo.border}`}>
       <div className="flex items-center justify-between">
-        <span className={`font-mono font-extrabold text-xs px-2.5 py-1 rounded-md ${issue.severity === 'error' ? 'bg-rose-500/20 text-rose-400' : 'bg-amber-500/20 text-amber-400'}`}>
+        <span className={`font-mono font-extrabold text-xs px-2.5 py-1 rounded-md border ${styleInfo.badge}`}>
           [{issue.type}] {issue.consumer ? `${issue.consumer.method} ${issue.consumer.path}` : ''}
         </span>
       </div>

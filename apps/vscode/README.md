@@ -2,8 +2,8 @@
 
 > **Catch frontend ↔ backend API contract mismatches before runtime.**
 
-[![VS Code Extension](https://img.shields.io/badge/VS%20Code-v1.3.0-blue.svg)](https://marketplace.visualstudio.com/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![VS Code Extension](https://img.shields.io/badge/VS%20Code-v1.4.0-blue.svg)](https://github.com/biswa-ganguly/APISentry)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/biswa-ganguly/APISentry)
 [![Engine](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org)
 [![Platform](https://img.shields.io/badge/support-VS%20Code%20%7C%20Cursor%20%7C%20Antigravity-purple.svg)](https://github.com/biswa-ganguly/APISentry)
 
