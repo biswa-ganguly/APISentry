@@ -1,9 +1,18 @@
 import http from 'node:http';
 import url from 'node:url';
 import path from 'node:path';
+import fs from 'node:fs';
 import { exec } from 'node:child_process';
 import { scanWorkspace } from '@apisentry/analyzer';
 import { getDashboardHtml } from './dashboardHtml.js';
+
+let logoBase64 = '';
+try {
+  const iconPath = path.resolve(__dirname, '../../../vscode/icon.png');
+  if (fs.existsSync(iconPath)) {
+    logoBase64 = `data:image/png;base64,${fs.readFileSync(iconPath).toString('base64')}`;
+  }
+} catch {}
 
 export function startPreviewServer(projectRoot: string, port: number = 4200): void {
   const server = http.createServer(async (req, res) => {
@@ -11,7 +20,7 @@ export function startPreviewServer(projectRoot: string, port: number = 4200): vo
 
     if (parsedUrl.pathname === '/' || parsedUrl.pathname === '/index.html') {
       res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-      res.end(getDashboardHtml());
+      res.end(getDashboardHtml(logoBase64));
       return;
     }
 
@@ -43,6 +52,15 @@ export function startPreviewServer(projectRoot: string, port: number = 4200): vo
 
     res.writeHead(404, { 'Content-Type': 'text/plain' });
     res.end('Not Found');
+  });
+
+  server.on('error', (err: any) => {
+    if (err.code === 'EADDRINUSE') {
+      console.warn(`[APISentry] Port ${port} is in use, trying port ${port + 1}...`);
+      startPreviewServer(projectRoot, port + 1);
+    } else {
+      console.error('[APISentry] Server error:', err);
+    }
   });
 
   server.listen(port, () => {

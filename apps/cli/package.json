@@ -7,7 +7,7 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && mkdir -p dist/preview && cp src/preview/*.html src/preview/*.css dist/preview/",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

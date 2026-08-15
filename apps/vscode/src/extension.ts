@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import path from 'node:path';
 import { AnalysisResult } from '@apisentry/types';
 import { DiagnosticManager } from './diagnostics/diagnosticManager.js';
 import { ContractTreeProvider } from './explorer/contractTreeProvider.js';
@@ -23,18 +24,17 @@ export async function activate(context: vscode.ExtensionContext) {
     treeProvider = new ContractTreeProvider();
     statusBar = new ContractStatusBar();
 
-    // Register tree provider immediately so sidebar view works without delay
     vscode.window.registerTreeDataProvider('apisentry.contractTree', treeProvider);
     outputChannel.appendLine('[APISentry] Registered TreeDataProvider and StatusBar.');
 
-    const runScan = async () => {
+    const runScan = async (presetPath?: string) => {
       const workspaceFolders = vscode.workspace.workspaceFolders;
-      if (!workspaceFolders || workspaceFolders.length === 0) {
-        outputChannel.appendLine('[APISentry] No workspace folder open.');
-        return;
+      let rootPath = workspaceFolders && workspaceFolders.length > 0 ? workspaceFolders[0].uri.fsPath : process.cwd();
+
+      if (presetPath && typeof presetPath === 'string') {
+        rootPath = path.isAbsolute(presetPath) ? presetPath : path.resolve(rootPath, presetPath);
       }
 
-      const rootPath = workspaceFolders[0].uri.fsPath;
       outputChannel.appendLine(`[APISentry] Starting workspace scan at ${rootPath}...`);
 
       try {
@@ -46,7 +46,7 @@ export async function activate(context: vscode.ExtensionContext) {
         statusBar.updateStatus(latestResult);
 
         if (ContractPanel.currentPanel) {
-          ContractPanel.currentPanel.update(latestResult);
+          ContractPanel.currentPanel.update(latestResult, presetPath || '');
         }
       } catch (err) {
         outputChannel.appendLine(`[APISentry ERROR] Workspace scan failed: ${err}`);
@@ -59,8 +59,8 @@ export async function activate(context: vscode.ExtensionContext) {
     });
 
     context.subscriptions.push(
-      vscode.commands.registerCommand('apisentry.scanWorkspace', runScan),
-      vscode.commands.registerCommand('apisentry.refreshContracts', runScan),
+      vscode.commands.registerCommand('apisentry.scanWorkspace', (presetPath?: string) => runScan(presetPath)),
+      vscode.commands.registerCommand('apisentry.refreshContracts', () => runScan()),
       vscode.commands.registerCommand('apisentry.openContractExplorer', () => {
         ContractPanel.createOrShow(context.extensionUri, latestResult);
       }),
@@ -71,7 +71,6 @@ export async function activate(context: vscode.ExtensionContext) {
     );
 
     outputChannel.appendLine('[APISentry] Activation complete. Running initial workspace scan...');
-    // Run initial scan
     runScan();
   } catch (activationErr) {
     console.error('[APISentry FATAL] Activation failed:', activationErr);

@@ -2,7 +2,7 @@
   "name": "apisentry-vscode",
   "displayName": "APISentry - API Contract Guard",
   "description": "Catch frontend ↔ backend API contract mismatches before runtime in VS Code, Cursor & Antigravity IDE.",
-  "version": "1.0.2",
+  "version": "1.0.7",
   "publisher": "apisentry",
   "icon": "icon.png",
   "engines": {
@@ -59,7 +59,7 @@
     }
   },
   "scripts": {
-    "build": "esbuild src/extension.ts --bundle --platform=node --target=node18 --external:vscode --outfile=dist/extension.js",
+    "build": "esbuild src/extension.ts --bundle --platform=node --target=node18 --external:vscode --outfile=dist/extension.js && mkdir -p dist/webview && cp src/webview/*.html src/webview/*.css dist/webview/",
     "package": "vsce package --allow-missing-repository --no-dependencies",
     "typecheck": "tsc --noEmit"
   },
