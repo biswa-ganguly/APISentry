@@ -1,97 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>APISentry IDE Preview</title>
-  <style>
-    /* STYLES_INJECT_PLACEHOLDER */
-  </style>
-</head>
-<body>
-  <div class="header">
-    <div class="brand">
-      <!-- LOGO_INJECT_PLACEHOLDER -->
-      <div class="title-box">
-        <div class="title">APISentry IDE Dashboard</div>
-        <div class="subtitle">Real-time Static API Contract Guard</div>
-      </div>
-    </div>
-    <div class="controls">
-      <select id="fixtureSelect" onchange="runPresetScan(this.value)">
-        <!-- PRESETS_INJECT_PLACEHOLDER -->
-      </select>
-      <button class="btn" onclick="scan()">Analyze Workspace Now</button>
-    </div>
-  </div>
-
-  <div class="metrics">
-    <div class="metric-card">
-      <div class="metric-label">Files Analyzed</div>
-      <div class="metric-val"><!-- FILES_VAL --></div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Frontend Callers</div>
-      <div class="metric-val"><!-- CONSUMERS_VAL --></div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Backend Endpoints</div>
-      <div class="metric-val"><!-- PROVIDERS_VAL --></div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Contract Errors</div>
-      <div class="metric-val error"><!-- ERRORS_VAL --></div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-label">Contract Warnings</div>
-      <div class="metric-val warning"><!-- WARNINGS_VAL --></div>
-    </div>
-  </div>
-
-  <div class="grid">
-    <div class="panel">
-      <div class="panel-title">
-        <span>Discovered Endpoints</span>
-        <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;"><!-- ENDPOINTS_COUNT --></span>
-      </div>
-      <input type="text" class="search-input" placeholder="Filter endpoints..." oninput="filterEndpoints(this.value)">
-      <div id="endpointList" style="display:flex; flex-direction:column; gap:8px;">
-        <!-- ENDPOINTS_LIST_INJECT -->
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="panel-title">
-        <span>Contract Issues & Correct Schemas</span>
-        <span style="font-size:0.8rem; color:var(--text-muted); font-weight:600;"><!-- ISSUES_COUNT --></span>
-      </div>
-
-      <!-- ISSUES_LIST_INJECT -->
-    </div>
-  </div>
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    const vscode = acquireVsCodeApi();
-
-    function scan() {
-      const select = document.getElementById('fixtureSelect');
-      vscode.postMessage({ command: 'scanWorkspace', fixture: select ? select.value : '' });
-    }
-
-    function runPresetScan(val) {
-      vscode.postMessage({ command: 'scanWorkspace', fixture: val });
-    }
-
-    function openFile(filePath, line, column) {
-      vscode.postMessage({ command: 'openFile', filePath, line, column });
-    }
-
-    function filterEndpoints(q) {
-      const items = document.querySelectorAll('.endpoint-item');
-      items.forEach(item => {
-        item.style.display = item.innerText.toLowerCase().includes(q.toLowerCase()) ? 'flex' : 'none';
-      });
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Montserrat', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
     }
   </script>
+</head>
+<body class="bg-[#0B0F17] text-gray-100 font-sans min-h-screen antialiased bg-[radial-gradient(at_10%_10%,rgba(99,102,241,0.15)_0px,transparent_50%),radial-gradient(at_90%_90%,rgba(6,182,212,0.15)_0px,transparent_50%)]">
+  <div id="root"></div>
+  <script src="SCRIPT_URI_PLACEHOLDER"></script>
 </body>
 </html>

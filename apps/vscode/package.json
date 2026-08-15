@@ -2,7 +2,7 @@
   "name": "apisentry-vscode",
   "displayName": "APISentry - API Contract Guard",
   "description": "Catch frontend ↔ backend API contract mismatches before runtime in VS Code, Cursor & Antigravity IDE.",
-  "version": "1.0.7",
+  "version": "1.1.1",
   "publisher": "apisentry",
   "icon": "icon.png",
   "engines": {
@@ -59,7 +59,7 @@
     }
   },
   "scripts": {
-    "build": "esbuild src/extension.ts --bundle --platform=node --target=node18 --external:vscode --outfile=dist/extension.js && mkdir -p dist/webview && cp src/webview/*.html src/webview/*.css dist/webview/",
+    "build": "esbuild src/extension.ts --bundle --platform=node --target=node18 --external:vscode --outfile=dist/extension.js && esbuild src/webview/index.tsx --bundle --platform=browser --target=es2020 --outfile=dist/webview/index.js && mkdir -p dist/webview && cp src/webview/dashboard.html dist/webview/dashboard.html",
     "package": "vsce package --allow-missing-repository --no-dependencies",
     "typecheck": "tsc --noEmit"
   },
@@ -68,9 +68,14 @@
     "@apisentry/config": "workspace:*",
     "@apisentry/shared": "workspace:*",
     "@apisentry/types": "workspace:*",
+    "@apisentry/ui": "workspace:*",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
     "@types/vscode": "^1.80.0",
     "@vscode/vsce": "^2.22.0",
     "esbuild": "^0.21.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "typescript": "^5.3.3"
   }
 }
