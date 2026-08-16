@@ -4,6 +4,24 @@
   "description": "Catch frontend ↔ backend API contract mismatches before runtime in VS Code, Cursor & Antigravity IDE.",
   "version": "1.4.0",
   "publisher": "apisentry",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/biswa-ganguly/APISentry.git"
+  },
+  "bugs": {
+    "url": "https://github.com/biswa-ganguly/APISentry/issues"
+  },
+  "homepage": "https://github.com/biswa-ganguly/APISentry#readme",
+  "keywords": [
+    "apisentry",
+    "api-contract",
+    "linter",
+    "typescript",
+    "python",
+    "contract-guard",
+    "static-analysis"
+  ],
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.80.0"
@@ -61,7 +79,7 @@
   },
   "scripts": {
     "build": "esbuild src/extension.ts --bundle --platform=node --target=node18 --external:vscode --outfile=dist/extension.js && esbuild src/webview/index.tsx --bundle --platform=browser --target=es2020 --outfile=dist/webview/index.js",
-    "package": "vsce package --allow-missing-repository --no-dependencies",
+    "package": "vsce package --no-dependencies",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

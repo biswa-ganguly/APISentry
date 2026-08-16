@@ -8,3 +8,4 @@ out/
 coverage/
 *.log
 API_CONTRACT_GUARD_README.md
+ARCHITECTURE_STUDY_GUIDE.md
